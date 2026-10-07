@@ -73,23 +73,19 @@
     <script src="https://cdn.jsdelivr.net/npm/highlight.js/lib/common.js"></script>
     <script>hljs.highlightAll();</script>
     
-    <!-- Visitor Counter -->
+    <!-- Visitor Counter - Using localStorage -->
     <script>
         async function updateVisitorCount() {
             try {
-                // Use visitor-badge.glitch.me which works well with GitHub Pages
-                const response = await fetch('https://visitor-badge.glitch.me/badge?page_id=jazblue-pc-fixes');
-                const data = await response.json();
-                document.getElementById('visit-count').textContent = data.count.toLocaleString();
+                const counterKey = 'jazblue-pc-fixes';
+                
+                // Simple localStorage-based counter (per browser)
+                let count = parseInt(localStorage.getItem('pc-fixes-views') || '0');
+                count++;
+                localStorage.setItem('pc-fixes-views', count.toString());
+                document.getElementById('visit-count').textContent = count.toLocaleString() + ' (this browser)';
             } catch (error) {
-                // Fallback to a simple counter
-                try {
-                    const response = await fetch('https://api.countapi.xyz/get/jazblue-pc-fixes/visits');
-                    const data = await response.json();
-                    document.getElementById('visit-count').textContent = data.value.toLocaleString();
-                } catch (e) {
-                    document.getElementById('visit-count').textContent = 'N/A';
-                }
+                document.getElementById('visit-count').textContent = 'N/A';
             }
         }
         updateVisitorCount();
